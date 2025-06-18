@@ -31,6 +31,17 @@
                                 Invalid username or password.
                             </div>
                             
+                            <!-- OAuth2 Login Buttons -->
+                            <div class="mb-4">
+                                <a href="/oauth2/authorization/google" class="btn btn-outline-danger w-100 mb-2">
+                                    <i class="bi bi-google me-2"></i> Sign in with Google
+                                </a>
+                            </div>
+                            
+                            <div class="text-center mb-4">
+                                <span class="bg-white px-2 text-muted">or sign in with email</span>
+                            </div>
+                            
                             <form th:action="@{/login}" method="post">
                                 <div class="mb-3">
                                     <label for="username" class="form-label">Email</label>

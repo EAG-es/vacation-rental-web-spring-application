@@ -54,7 +54,15 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         user.setName(userDTO.getName());
         user.setEmail(userDTO.getEmail());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        
+        // Only set password for local users
+        if ("local".equals(userDTO.getProvider())) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        
+        user.setProvider(userDTO.getProvider());
+        user.setProviderId(userDTO.getProviderId());
+        user.setImageUrl(userDTO.getImageUrl());
         
         Set<String> roles = new HashSet<>();
         roles.add("USER");
@@ -72,9 +80,14 @@ public class UserServiceImpl implements UserService {
         
         existingUser.setName(userDTO.getName());
         
-        // Only update password if provided
-        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+        // Only update password for local users and if provided
+        if ("local".equals(existingUser.getProvider()) && userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
             existingUser.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        
+        // Update image URL if provided
+        if (userDTO.getImageUrl() != null) {
+            existingUser.setImageUrl(userDTO.getImageUrl());
         }
         
         User updatedUser = userRepository.save(existingUser);
@@ -102,6 +115,9 @@ public class UserServiceImpl implements UserService {
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
         dto.setRoles(user.getRoles());
+        dto.setImageUrl(user.getImageUrl());
+        dto.setProvider(user.getProvider());
+        dto.setProviderId(user.getProviderId());
         dto.setCreatedAt(user.getCreatedAt());
         return dto;
     }

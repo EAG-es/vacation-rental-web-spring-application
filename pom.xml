@@ -41,6 +41,18 @@
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
         
+        <!-- OAuth2 Client -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+        
+        <!-- Thymeleaf Security Extras -->
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity6</artifactId>
+        </dependency>
+        
         <!-- Database -->
         <dependency>
             <groupId>com.h2database</groupId>

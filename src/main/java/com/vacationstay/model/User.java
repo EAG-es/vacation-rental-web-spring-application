@@ -30,8 +30,17 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
+
+    @Column
+    private String imageUrl;
+
+    @Column
+    private String provider; // "local", "google", etc.
+
+    @Column
+    private String providerId;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
@@ -51,4 +60,9 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    // Helper method to check if user is authenticated via OAuth
+    public boolean isOauthUser() {
+        return provider != null && !provider.equals("local");
+    }
 }
