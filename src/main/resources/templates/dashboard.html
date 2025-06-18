@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - VacationStay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header}"></div>
+    
+    <main class="flex-grow-1 py-4">
+        <div class="container">
+            <div class="mb-4">
+                <h1 class="h3 mb-2">Dashboard</h1>
+                <p class="text-muted">Welcome back, <span th:text="${user.name}">User</span></p>
+            </div>
+            
+            <!-- Success/Error Messages -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            
+            <!-- Tabs -->
+            <ul class="nav nav-tabs mb-4" id="dashboardTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active d-flex align-items-center" id="bookings-tab" data-bs-toggle="tab" data-bs-target="#bookings" type="button">
+                        <i class="bi bi-calendar me-2"></i> My Bookings
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link d-flex align-items-center" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button">
+                        <i class="bi bi-person me-2"></i> Profile
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="dashboardTabsContent">
+                <!-- Bookings Tab -->
+                <div class="tab-pane fade show active" id="bookings" role="tabpanel">
+                    <div th:if="${userBookings.empty}" class="text-center py-5">
+                        <i class="bi bi-calendar display-1 text-muted mb-3"></i>
+                        <h3>No bookings yet</h3>
+                        <p class="text-muted">You haven't made any bookings yet. Start exploring properties to plan your next vacation!</p>
+                        <a th:href="@{/properties}" class="btn btn-primary mt-3">Browse Properties</a>
+                    </div>
+                    
+                    <div th:if="${!userBookings.empty}" class="row">
+                        <div class="col-12 mb-4" th:each="booking : ${userBookings}">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3 mb-3 mb-md-0">
+                                            <img th:src="${booking.property.images[0]}" class="img-fluid rounded" alt="Property image">
+                                        </div>
+                                        <div class="col-md-6 mb-3 mb-md-0">
+                                            <h5 class="card-title" th:text="${booking.property.title}">Property Title</h5>
+                                            <p class="text-muted" th:text="${booking.property.location}">Location</p>
+                                            
+                                            <div class="d-flex flex-wrap gap-4 text-sm mb-3">
+                                                <div>
+                                                    <span class="fw-medium">Check-in:</span>
+                                                    <span th:text="${#temporals.format(booking.startDate, 'MMM d, yyyy')}">Jan 1, 2023</span>
+                                                </div>
+                                                <div>
+                                                    <span class="fw-medium">Check-out:</span>
+                                                    <span th:text="${#temporals.format(booking.endDate, 'MMM d, yyyy')}">Jan 5, 2023</span>
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <span class="fw-medium">Status: </span>
+                                                <span th:class="${booking.status == 'confirmed' ? 'text-success' : 'text-danger'}" 
+                                                      th:text="${#strings.capitalize(booking.status)}">Status</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-md-end">
+                                            <div class="fw-bold mb-3">
+                                                $<span th:text="${booking.totalPrice}">500</span>
+                                            </div>
+                                            
+                                            <div class="d-flex flex-column gap-2">
+                                                <a th:href="@{/properties/{id}(id=${booking.propertyId})}" class="btn btn-outline-primary btn-sm">
+                                                    View Property
+                                                </a>
+                                                
+                                                <form th:if="${booking.status == 'confirmed'}" th:action="@{/bookings/{id}/cancel(id=${booking.id})}" method="post">
+                                                    <button type="submit" class="btn btn-danger btn-sm w-100" 
+                                                            onclick="return confirm('Are you sure you want to cancel this booking?')">
+                                                        Cancel Booking
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Profile Tab -->
+                <div class="tab-pane fade" id="profile" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Personal Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Name</label>
+                                        <input type="text" class="form-control" th:value="${user.name}" readonly>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Email</label>
+                                        <input type="email" class="form-control" th:value="${user.email}" readonly>
+                                    </div>
+                                    <div>
+                                        <label class="form-label">Member since</label>
+                                        <input type="text" class="form-control" th:value="${#temporals.format(user.createdAt, 'MMMM d, yyyy')}" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Account Settings</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-outline-primary" type="button">
+                                            Change Password
+                                        </button>
+                                        <button class="btn btn-outline-primary" type="button">
+                                            Edit Profile
+                                        </button>
+                                        <button class="btn btn-outline-primary" type="button">
+                                            Notification Preferences
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

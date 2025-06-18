@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VacationStay - Find Your Perfect Vacation Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header}"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section position-relative">
+        <div class="hero-image">
+            <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4" alt="Vacation rental" class="w-100">
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="container position-relative hero-content">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center text-white">
+                    <h1 class="display-4 fw-bold mb-4">Find Your Perfect Vacation Home</h1>
+                    <p class="lead mb-5">Discover and book unique accommodations around the world</p>
+                    
+                    <form th:action="@{/properties}" method="get" class="search-form bg-white p-3 rounded shadow">
+                        <div class="row g-2">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-transparent border-0">
+                                        <i class="bi bi-geo-alt"></i>
+                                    </span>
+                                    <input type="text" name="location" class="form-control border-0" placeholder="Where are you going?">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="guests" class="form-select border-0">
+                                    <option value="">Guests</option>
+                                    <option value="1">1 guest</option>
+                                    <option value="2">2 guests</option>
+                                    <option value="4">4 guests</option>
+                                    <option value="6">6+ guests</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bi bi-search me-2"></i> Search
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Properties -->
+    <section class="py-5">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h3 mb-0">Featured Properties</h2>
+                <a th:href="@{/properties}" class="btn btn-outline-primary">
+                    View all <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+            
+            <div class="row g-4">
+                <div th:each="property : ${featuredProperties}" class="col-md-6 col-lg-4">
+                    <div class="card h-100 property-card">
+                        <div class="position-relative">
+                            <img th:src="${#strings.listSplit(property.images[0], ',')[0]}" class="card-img-top" alt="Property image">
+                            <span class="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 m-2 rounded">
+                                $<span th:text="${property.price}"></span>/night
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${property.title}">Property Title</h5>
+                            <p class="card-text text-muted" th:text="${property.location}">Location</p>
+                            
+                            <div class="d-flex justify-content-between text-muted small mb-3">
+                                <span><i class="bi bi-people me-1"></i> <span th:text="${property.maxGuests}"></span> guests</span>
+                                <span><i class="bi bi-door-closed me-1"></i> <span th:text="${property.bedrooms}"></span> bedrooms</span>
+                                <span><i class="bi bi-water me-1"></i> <span th:text="${property.bathrooms}"></span> baths</span>
+                            </div>
+                            
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span th:each="amenity, iterStat : ${property.amenities}" th:if="${iterStat.index < 3}" 
+                                      class="badge bg-light text-dark" th:text="${amenity}">Amenity</span>
+                                <span th:if="${property.amenities.size() > 3}" class="badge bg-light text-dark">
+                                    +<span th:text="${property.amenities.size() - 3}"></span> more
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <a th:href="@{/properties/{id}(id=${property.id})}" class="btn btn-outline-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Popular Destinations -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="h3 mb-4">Popular Destinations</h2>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a th:href="@{/properties(location='Malibu')}" class="destination-card">
+                        <div class="position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1523906834658-6e24ef2386f9" class="w-100" alt="Malibu">
+                            <div class="destination-overlay"></div>
+                            <div class="destination-content">
+                                <h3 class="text-white">Malibu</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a th:href="@{/properties(location='Aspen')}" class="destination-card">
+                        <div class="position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1605540436563-5bca919ae766" class="w-100" alt="Aspen">
+                            <div class="destination-overlay"></div>
+                            <div class="destination-content">
+                                <h3 class="text-white">Aspen</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a th:href="@{/properties(location='New York')}" class="destination-card">
+                        <div class="position-relative rounded overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9" class="w-100" alt="New York">
+                            <div class="destination-overlay"></div>
+                            <div class="destination-content">
+                                <h3 class="text-white">New York</h3>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Properties - VacationStay</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header}"></div>
+    
+    <main class="flex-grow-1 py-4">
+        <div class="container">
+            <h1 class="h3 mb-4">Find your perfect stay</h1>
+            
+            <!-- Filters -->
+            <div class="card mb-4">
+                <div class="card-body">
+                    <form th:action="@{/properties}" method="get" class="row g-3">
+                        <div class="col-md-4">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" name="location" th:value="${location}" placeholder="Any location">
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label class="form-label">Price Range</label>
+                            <div class="row g-2">
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" name="minPrice" th:value="${minPrice}" placeholder="Min">
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" name="maxPrice" th:value="${maxPrice}" placeholder="Max">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="bedrooms" class="form-label">Bedrooms</label>
+                            <select class="form-select" id="bedrooms" name="bedrooms">
+                                <option value="">Any</option>
+                                <option value="1" th:selected="${bedrooms == 1}">1+</option>
+                                <option value="2" th:selected="${bedrooms == 2}">2+</option>
+                                <option value="3" th:selected="${bedrooms == 3}">3+</option>
+                                <option value="4" th:selected="${bedrooms == 4}">4+</option>
+                                <option value="5" th:selected="${bedrooms == 5}">5+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="bathrooms" class="form-label">Bathrooms</label>
+                            <select class="form-select" id="bathrooms" name="bathrooms">
+                                <option value="">Any</option>
+                                <option value="1" th:selected="${bathrooms == 1}">1+</option>
+                                <option value="2" th:selected="${bathrooms == 2}">2+</option>
+                                <option value="3" th:selected="${bathrooms == 3}">3+</option>
+                                <option value="4" th:selected="${bathrooms == 4}">4+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <label for="guests" class="form-label">Guests</label>
+                            <select class="form-select" id="guests" name="guests">
+                                <option value="">Any</option>
+                                <option value="1" th:selected="${guests == 1}">1+</option>
+                                <option value="2" th:selected="${guests == 2}">2+</option>
+                                <option value="4" th:selected="${guests == 4}">4+</option>
+                                <option value="6" th:selected="${guests == 6}">6+</option>
+                                <option value="8" th:selected="${guests == 8}">8+</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary me-2">Apply Filters</button>
+                            <a th:href="@{/properties}" class="btn btn-outline-secondary">
+                                <i class="bi bi-x"></i> Reset
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Property Listings -->
+            <div class="row g-4" th:if="${!properties.empty}">
+                <div th:each="property : ${properties}" class="col-md-6 col-lg-4">
+                    <div class="card h-100 property-card">
+                        <div class="position-relative">
+                            <img th:src="${#strings.listSplit(property.images[0], ',')[0]}" class="card-img-top" alt="Property image">
+                            <span class="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 m-2 rounded">
+                                $<span th:text="${property.price}"></span>/night
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${property.title}">Property Title</h5>
+                            <p class="card-text text-muted" th:text="${property.location}">Location</p>
+                            
+                            <div class="d-flex justify-content-between text-muted small mb-3">
+                                <span><i class="bi bi-people me-1"></i> <span th:text="${property.maxGuests}"></span> guests</span>
+                                <span><i class="bi bi-door-closed me-1"></i> <span th:text="${property.bedrooms}"></span> bedrooms</span>
+                                <span><i class="bi bi-water me-1"></i> <span th:text="${property.bathrooms}"></span> baths</span>
+                            </div>
+                            
+                            <div class="d-flex flex-wrap gap-1 mb-3">
+                                <span th:each="amenity, iterStat : ${property.amenities}" th:if="${iterStat.index < 3}" 
+                                      class="badge bg-light text-dark" th:text="${amenity}">Amenity</span>
+                                <span th:if="${property.amenities.size() > 3}" class="badge bg-light text-dark">
+                                    +<span th:text="${property.amenities.size() - 3}"></span> more
+                                </span>
+                            </div>
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="rating text-warning me-1">
+                                    <i class="bi bi-star-fill"></i>
+                                </div>
+                                <span th:text="${#numbers.formatDecimal(property.averageRating, 1, 1)}">4.8</span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <a th:href="@{/properties/{id}(id=${property.id})}" class="btn btn-outline-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- No Results -->
+            <div class="text-center py-5" th:if="${properties.empty}">
+                <i class="bi bi-search display-1 text-muted mb-3"></i>
+                <h3>No properties found</h3>
+                <p class="text-muted">Try adjusting your search filters to find more options.</p>
+                <a th:href="@{/properties}" class="btn btn-primary mt-3">Clear Filters</a>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

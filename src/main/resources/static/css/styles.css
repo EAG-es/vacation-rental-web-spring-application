@@ -1,0 +1,155 @@
+/* Global Styles */
+:root {
+    --primary-color: #0d6efd;
+    --primary-dark: #0a58ca;
+    --secondary-color: #f8f9fa;
+    --text-color: #212529;
+    --muted-color: #6c757d;
+    --border-color: #dee2e6;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text-color);
+}
+
+/* Hero Section */
+.hero-section {
+    height: 500px;
+    overflow: hidden;
+}
+
+.hero-image {
+    height: 100%;
+    width: 100%;
+}
+
+.hero-image img {
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.8);
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 100%);
+}
+
+.hero-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.search-form {
+    border-radius: 8px;
+}
+
+/* Property Cards */
+.property-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.property-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* Destination Cards */
+.destination-card {
+    display: block;
+    text-decoration: none;
+}
+
+.destination-card img {
+    height: 250px;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.destination-card:hover img {
+    transform: scale(1.05);
+}
+
+.destination-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.1) 100%);
+    border-radius: 8px;
+}
+
+.destination-content {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+}
+
+/* Property Detail Page */
+.main-property-image {
+    height: 400px;
+    object-fit: cover;
+}
+
+.property-thumbnail {
+    height: 100px;
+    object-fit: cover;
+}
+
+.booking-card {
+    border-radius: 8px;
+}
+
+/* Dashboard */
+.nav-tabs .nav-link.active {
+    font-weight: 500;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 400px;
+    }
+    
+    .main-property-image {
+        height: 300px;
+    }
+    
+    .property-thumbnail {
+        height: 80px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero-section {
+        height: 350px;
+    }
+    
+    .main-property-image {
+        height: 250px;
+    }
+}
