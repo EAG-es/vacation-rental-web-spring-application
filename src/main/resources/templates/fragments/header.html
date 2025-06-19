@@ -40,8 +40,10 @@
                             <li><a class="dropdown-item" th:href="@{/dashboard}">Dashboard</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
-                                <form th:action="@{/logout}" method="post">
-                                    <button type="submit" class="dropdown-item">Logout</button>
+                                <form th:action="@{/logout}" method="post" class="dropdown-item p-0">
+                                    <button type="submit" class="btn btn-link text-decoration-none text-danger w-100 text-start px-3 py-1">
+                                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                                    </button>
                                 </form>
                             </li>
                         </ul>

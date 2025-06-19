@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -29,7 +30,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/", "/properties", "/properties/**", "/css/**", "/js/**", "/images/**", "/h2-console/**").permitAll()
+                .requestMatchers("/", "/properties", "/properties/**", "/css/**", "/js/**", "/images/**", "/h2-console/**", "/error/**").permitAll()
                 .requestMatchers("/api/properties/**").permitAll()
                 .requestMatchers("/oauth2/**", "/login/**", "/register").permitAll()
                 .requestMatchers("/dashboard", "/bookings/**", "/reviews/add").authenticated()
@@ -49,7 +50,11 @@ public class SecurityConfig {
                 .successHandler(oAuth2AuthenticationSuccessHandler)
             )
             .logout(logout -> logout
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/")
+                .deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
                 .permitAll()
             )
             .csrf(csrf -> csrf
