@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Search, User, Menu, X } from "lucide-react";
+import { Search, User, Menu, X, Globe } from "lucide-react";
 
 export function Header() {
   const { data: session } = fine.auth.useSession();
@@ -19,6 +19,7 @@ export function Header() {
   const isMobile = useIsMobile();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentLanguage, setCurrentLanguage] = useState("en"); // Default to English
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,6 +28,18 @@ export function Header() {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const changeLanguage = (lang: string) => {
+    setCurrentLanguage(lang);
+    // In a real app, you would use i18next or similar to change the language
+    localStorage.setItem("preferredLanguage", lang);
+    // This would trigger a re-render with new translations
+  };
+
+  const languageNames: Record<string, string> = {
+    en: "English",
+    es: "Español"
   };
 
   return (
@@ -54,6 +67,24 @@ export function Header() {
         )}
 
         <div className="flex items-center gap-4">
+          {/* Language Switcher */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full">
+                <Globe className="h-4 w-4" />
+                <span className="ml-2 hidden md:inline">{languageNames[currentLanguage]}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => changeLanguage("en")}>
+                <span className={currentLanguage === "en" ? "font-bold" : ""}>English</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => changeLanguage("es")}>
+                <span className={currentLanguage === "es" ? "font-bold" : ""}>Español</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
           {isMobile ? (
             <Button variant="ghost" size="icon" onClick={toggleMenu}>
               {isMenuOpen ? <X /> : <Menu />}
@@ -128,6 +159,30 @@ export function Header() {
                 </Button>
               </>
             )}
+            <div className="border-t pt-2 mt-2">
+              <div className="flex flex-col gap-2">
+                <Button 
+                  variant={currentLanguage === "en" ? "secondary" : "ghost"} 
+                  className="justify-start"
+                  onClick={() => {
+                    changeLanguage("en");
+                    toggleMenu();
+                  }}
+                >
+                  English
+                </Button>
+                <Button 
+                  variant={currentLanguage === "es" ? "secondary" : "ghost"} 
+                  className="justify-start"
+                  onClick={() => {
+                    changeLanguage("es");
+                    toggleMenu();
+                  }}
+                >
+                  Español
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       )}

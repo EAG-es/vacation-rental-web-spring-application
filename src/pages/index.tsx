@@ -6,6 +6,7 @@ import { PropertyCard } from "@/components/PropertyCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 import { Search, MapPin, ArrowRight } from "lucide-react";
 
 const Index = () => {
@@ -13,6 +14,7 @@ const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const fetchFeaturedProperties = async () => {
@@ -63,10 +65,10 @@ const Index = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
         <div className="container relative z-10 mx-auto flex h-full flex-col items-center justify-center px-4 text-center text-white">
           <h1 className="mb-4 text-4xl font-bold md:text-5xl lg:text-6xl">
-            Find Your Perfect Vacation Home
+            {t('home.hero.title')}
           </h1>
           <p className="mb-8 max-w-2xl text-lg md:text-xl">
-            Discover and book unique accommodations around the world
+            {t('home.hero.subtitle')}
           </p>
           
           <form onSubmit={handleSearch} className="w-full max-w-md">
@@ -74,7 +76,7 @@ const Index = () => {
               <MapPin className="absolute left-3 top-3 h-5 w-5 text-muted-foreground" />
               <Input
                 type="text"
-                placeholder="Where are you going?"
+                placeholder={t('home.hero.searchPlaceholder')}
                 className="h-12 bg-white pl-10 pr-12 text-black"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -94,10 +96,10 @@ const Index = () => {
       {/* Featured Properties */}
       <section className="container mx-auto py-12 px-4">
         <div className="mb-8 flex items-center justify-between">
-          <h2 className="text-2xl font-bold md:text-3xl">Featured Properties</h2>
+          <h2 className="text-2xl font-bold md:text-3xl">{t('home.featuredProperties')}</h2>
           <Button variant="outline" asChild>
             <Link to="/properties" className="flex items-center gap-1">
-              View all <ArrowRight className="h-4 w-4" />
+              {t('home.viewAll')} <ArrowRight className="h-4 w-4" />
             </Link>
           </Button>
         </div>
@@ -120,7 +122,7 @@ const Index = () => {
       {/* Popular Destinations */}
       <section className="bg-muted py-12">
         <div className="container mx-auto px-4">
-          <h2 className="mb-8 text-2xl font-bold md:text-3xl">Popular Destinations</h2>
+          <h2 className="mb-8 text-2xl font-bold md:text-3xl">{t('home.popularDestinations')}</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {popularDestinations.map((destination, index) => (
               <Link 
@@ -151,12 +153,12 @@ const Index = () => {
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <div>
               <p className="text-lg font-bold">VacationStay</p>
-              <p className="text-sm text-muted-foreground">© 2023 VacationStay. All rights reserved.</p>
+              <p className="text-sm text-muted-foreground">© 2023 VacationStay. {t('common.allRightsReserved')}</p>
             </div>
             <div className="flex gap-4">
-              <Link to="/properties" className="text-sm hover:underline">Properties</Link>
-              <Link to="/about" className="text-sm hover:underline">About</Link>
-              <Link to="/contact" className="text-sm hover:underline">Contact</Link>
+              <Link to="/properties" className="text-sm hover:underline">{t('common.properties')}</Link>
+              <Link to="/about" className="text-sm hover:underline">{t('common.about')}</Link>
+              <Link to="/contact" className="text-sm hover:underline">{t('common.contact')}</Link>
             </div>
           </div>
         </div>

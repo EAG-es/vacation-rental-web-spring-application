@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
+import { useLanguage } from "@/lib/i18n/LanguageContext";
 import {
   Select,
   SelectContent,
@@ -18,6 +19,7 @@ export function SearchFilters() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [isFiltersVisible, setIsFiltersVisible] = useState(false);
+  const { t } = useLanguage();
 
   // Initialize filter state from URL params
   const [filters, setFilters] = useState({
@@ -80,7 +82,7 @@ export function SearchFilters() {
   return (
     <div className="mb-6">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold">Find your perfect stay</h2>
+        <h2 className="text-2xl font-bold">{t('filters.findYourPerfectStay')}</h2>
         <Button 
           variant="outline" 
           size="sm" 
@@ -97,18 +99,18 @@ export function SearchFilters() {
           <CardContent className="pt-6">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="location">Location</Label>
+                <Label htmlFor="location">{t('filters.location')}</Label>
                 <Input
                   id="location"
                   name="location"
-                  placeholder="Any location"
+                  placeholder={t('filters.any')}
                   value={filters.location}
                   onChange={handleInputChange}
                 />
               </div>
 
               <div className="space-y-2">
-                <Label>Price Range (per night)</Label>
+                <Label>{t('filters.priceRange')}</Label>
                 <div className="pt-4">
                   <Slider
                     defaultValue={[filters.minPrice, filters.maxPrice]}
@@ -124,16 +126,16 @@ export function SearchFilters() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="bedrooms">Bedrooms</Label>
+                <Label htmlFor="bedrooms">{t('filters.bedrooms')}</Label>
                 <Select
                   value={filters.bedrooms}
                   onValueChange={(value) => handleSelectChange("bedrooms", value)}
                 >
                   <SelectTrigger id="bedrooms">
-                    <SelectValue placeholder="Any" />
+                    <SelectValue placeholder={t('filters.any')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any</SelectItem>
+                    <SelectItem value="">{t('filters.any')}</SelectItem>
                     <SelectItem value="1">1+</SelectItem>
                     <SelectItem value="2">2+</SelectItem>
                     <SelectItem value="3">3+</SelectItem>
@@ -144,16 +146,16 @@ export function SearchFilters() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="bathrooms">Bathrooms</Label>
+                <Label htmlFor="bathrooms">{t('filters.bathrooms')}</Label>
                 <Select
                   value={filters.bathrooms}
                   onValueChange={(value) => handleSelectChange("bathrooms", value)}
                 >
                   <SelectTrigger id="bathrooms">
-                    <SelectValue placeholder="Any" />
+                    <SelectValue placeholder={t('filters.any')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any</SelectItem>
+                    <SelectItem value="">{t('filters.any')}</SelectItem>
                     <SelectItem value="1">1+</SelectItem>
                     <SelectItem value="2">2+</SelectItem>
                     <SelectItem value="3">3+</SelectItem>
@@ -163,16 +165,16 @@ export function SearchFilters() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="guests">Guests</Label>
+                <Label htmlFor="guests">{t('filters.guests')}</Label>
                 <Select
                   value={filters.guests}
                   onValueChange={(value) => handleSelectChange("guests", value)}
                 >
                   <SelectTrigger id="guests">
-                    <SelectValue placeholder="Any" />
+                    <SelectValue placeholder={t('filters.any')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Any</SelectItem>
+                    <SelectItem value="">{t('filters.any')}</SelectItem>
                     <SelectItem value="1">1+</SelectItem>
                     <SelectItem value="2">2+</SelectItem>
                     <SelectItem value="4">4+</SelectItem>
@@ -183,10 +185,10 @@ export function SearchFilters() {
               </div>
 
               <div className="flex items-end space-x-2 md:col-span-1">
-                <Button onClick={applyFilters} className="flex-1">Apply Filters</Button>
+                <Button onClick={applyFilters} className="flex-1">{t('filters.applyFilters')}</Button>
                 <Button variant="outline" onClick={resetFilters} className="flex items-center gap-1">
                   <X className="h-4 w-4" />
-                  Reset
+                  {t('filters.reset')}
                 </Button>
               </div>
             </div>

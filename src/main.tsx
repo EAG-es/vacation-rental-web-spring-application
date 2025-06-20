@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { TooltipProvider } from "./components/ui/tooltip";
 
 import { ThemeProvider } from "./components/layout/theme-provider";
+import { LanguageProvider } from "./lib/i18n/LanguageContext";
 import "./index.css";
 import Index from "./pages";
 import Properties from "./pages/properties";
@@ -23,19 +24,21 @@ createRoot(document.getElementById("root")!).render(
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <ThemeProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path='/' element={<Index />} />
-            <Route path='/properties' element={<Properties />} />
-            <Route path='/property/:id' element={<PropertyDetail />} />
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/login' element={<LoginForm />} />
-            <Route path='/signup' element={<SignupForm />} />
-            <Route path='/logout' element={<Logout />} />
-          </Routes>
-        </BrowserRouter>
-        <Sonner />
-        <Toaster />
+        <LanguageProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path='/' element={<Index />} />
+              <Route path='/properties' element={<Properties />} />
+              <Route path='/property/:id' element={<PropertyDetail />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+              <Route path='/login' element={<LoginForm />} />
+              <Route path='/signup' element={<SignupForm />} />
+              <Route path='/logout' element={<Logout />} />
+            </Routes>
+          </BrowserRouter>
+          <Sonner />
+          <Toaster />
+        </LanguageProvider>
       </ThemeProvider>
     </TooltipProvider>
   </QueryClientProvider>
