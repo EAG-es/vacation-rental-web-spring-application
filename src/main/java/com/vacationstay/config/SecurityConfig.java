@@ -13,6 +13,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Security configuration for the VacationStay application.
+ * <p>
+ * This class configures Spring Security, including authentication, authorization,
+ * OAuth2 login, and password encoding.
+ * </p>
+ *
+ * @author VacationStay Team
+ * @version 1.0
+ * @since 2023-06-18
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -20,12 +31,29 @@ public class SecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
+    /**
+     * Constructor for SecurityConfig.
+     *
+     * @param customOAuth2UserService the custom OAuth2 user service
+     * @param oAuth2AuthenticationSuccessHandler the OAuth2 authentication success handler
+     */
     public SecurityConfig(CustomOAuth2UserService customOAuth2UserService, 
                          OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler) {
         this.customOAuth2UserService = customOAuth2UserService;
         this.oAuth2AuthenticationSuccessHandler = oAuth2AuthenticationSuccessHandler;
     }
 
+    /**
+     * Configures the security filter chain.
+     * <p>
+     * This method defines URL-based security, authentication methods,
+     * and other security-related configurations.
+     * </p>
+     *
+     * @param http the HttpSecurity to configure
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -67,11 +95,26 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Creates a password encoder bean.
+     * <p>
+     * This method provides a BCryptPasswordEncoder for secure password hashing.
+     * </p>
+     *
+     * @return the password encoder
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
+    /**
+     * Creates an authentication manager bean.
+     *
+     * @param authConfig the authentication configuration
+     * @return the authentication manager
+     * @throws Exception if an error occurs during creation
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();

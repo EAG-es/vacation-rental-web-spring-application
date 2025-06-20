@@ -18,6 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link PropertyService} interface.
+ * <p>
+ * This class provides the business logic for property-related operations.
+ * </p>
+ *
+ * @author VacationStay Team
+ * @version 1.0
+ * @since 2023-06-18
+ */
 @Service
 @RequiredArgsConstructor
 public class PropertyServiceImpl implements PropertyService {
@@ -26,6 +36,9 @@ public class PropertyServiceImpl implements PropertyService {
     private final ReviewRepository reviewRepository;
     private final ObjectMapper objectMapper;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<PropertyDTO> getAllProperties() {
@@ -34,6 +47,9 @@ public class PropertyServiceImpl implements PropertyService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public PropertyDTO getPropertyById(Long id) {
@@ -42,6 +58,9 @@ public class PropertyServiceImpl implements PropertyService {
         return convertToDTO(property);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public PropertyDTO createProperty(PropertyDTO propertyDTO) {
@@ -50,6 +69,9 @@ public class PropertyServiceImpl implements PropertyService {
         return convertToDTO(savedProperty);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public PropertyDTO updateProperty(Long id, PropertyDTO propertyDTO) {
@@ -75,6 +97,9 @@ public class PropertyServiceImpl implements PropertyService {
         return convertToDTO(updatedProperty);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional
     public void deleteProperty(Long id) {
@@ -84,6 +109,9 @@ public class PropertyServiceImpl implements PropertyService {
         propertyRepository.deleteById(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<PropertyDTO> searchProperties(String location, BigDecimal minPrice, BigDecimal maxPrice, 
@@ -94,6 +122,9 @@ public class PropertyServiceImpl implements PropertyService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     @Transactional(readOnly = true)
     public List<PropertyDTO> getPropertiesByOwner(String ownerId) {
@@ -103,6 +134,12 @@ public class PropertyServiceImpl implements PropertyService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Converts a Property entity to a PropertyDTO.
+     *
+     * @param property the property entity to convert
+     * @return the converted property DTO
+     */
     private PropertyDTO convertToDTO(Property property) {
         PropertyDTO dto = new PropertyDTO();
         dto.setId(property.getId());
@@ -133,6 +170,12 @@ public class PropertyServiceImpl implements PropertyService {
         return dto;
     }
 
+    /**
+     * Converts a PropertyDTO to a Property entity.
+     *
+     * @param dto the property DTO to convert
+     * @return the converted property entity
+     */
     private Property convertToEntity(PropertyDTO dto) {
         Property property = new Property();
         property.setTitle(dto.getTitle());

@@ -1,50 +1,109 @@
-# React + TypeScript + Vite
+# VacationStay Rental Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This application provides a platform for users to browse, book, and manage vacation rental properties.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Browse vacation rentals with search and filtering
+- View detailed property information with photos, amenities, and availability
+- User authentication (login/signup) to access booking features
+- Booking system to reserve properties for specific dates
+- User dashboard to manage bookings and profile
+- Internationalization support for English and Spanish
 
-## Expanding the ESLint configuration
+## Technology Stack
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### Frontend
+- React
+- Vite
+- Tailwind CSS
+- shadcn/ui components
+- i18next for internationalization
 
-- Configure the top-level `parserOptions` property like this:
+### Backend (Java Spring Boot)
+- Spring Boot
+- Spring Data JPA
+- Spring Security
+- Spring MVC
+- Thymeleaf (for server-side templates)
+- H2 Database (for development)
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Getting Started
+
+### Prerequisites
+- Node.js (v16+)
+- npm or yarn
+- Java 17+
+- Maven
+
+### Running the Frontend
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### Running the Backend
+```bash
+# Navigate to the backend directory
+cd backend
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+# Build the project
+mvn clean install
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+# Run the application
+mvn spring-boot:run
 ```
+
+## Testing
+
+### Frontend Tests
+```bash
+# Run tests
+npm test
+```
+
+### Backend Tests
+```bash
+# Run tests
+mvn test
+```
+
+## Generating Javadoc
+
+To generate Javadoc documentation for the Java backend:
+
+```bash
+# Generate Javadoc
+mvn javadoc:javadoc
+```
+
+The generated documentation will be available in the `target/site/apidocs` directory.
+
+### Javadoc Configuration
+
+The project is configured to generate comprehensive Javadoc with the following features:
+- Package, class, method, and field documentation
+- Navigation links between related classes
+- Inheritance diagrams
+- Index of all classes and members
+
+## Internationalization
+
+The application supports multiple languages:
+- English (default)
+- Spanish
+
+To switch languages, use the language selector in the application header.
+
+### Adding New Languages
+
+To add support for a new language:
+1. Create a new translation file in `src/locales/{language}/translation.json`
+2. Add the language to the language options in `src/components/LanguageSwitcher.tsx`
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
