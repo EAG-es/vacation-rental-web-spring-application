@@ -1,7 +1,9 @@
 -- Insert sample users
+-- john_doe_password
+-- jane_smith_password
 INSERT INTO users (name, email, password, created_at, updated_at) VALUES
-('John Doe', 'john@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-('Jane Smith', 'jane@example.com', '$2a$10$dXJ3SW6G7P50lGmMkkmwe.20cQQubK3.HZWzG3YB1tlRy.fqvM/BG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+('John Doe', 'john@example.com', '$2a$12$EIV8VcWDHFBLZMaOWKzhOeuF9zfCnpAVwFatnowaXQqsZVBXu3wqq', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('Jane Smith', 'jane@example.com', '$2a$12$ZaG2ic.WwQffKVU.46F09evTm9BOsCy/BO/cT3SV2eM46nheJ7CwG', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 -- Insert user roles
 INSERT INTO user_roles (user_id, role) VALUES
