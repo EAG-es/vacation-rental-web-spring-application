@@ -110,12 +110,10 @@ class UserRepositoryTest {
         entityManager.flush();
 
         // Test different cases - this depends on database collation
-        Optional<User> foundUser1 = userRepository.findByEmail("JOHN.DOE@EXAMPLE.COM");
-        Optional<User> foundUser2 = userRepository.findByEmail("john.doe@EXAMPLE.com");
+        Optional<User> foundUser1 = userRepository.findByEmail("JOHN@EXAMPLE.COM");
+        Optional<User> foundUser2 = userRepository.findByEmail("john@example.com");
 
-        // For H2 database, email search is typically case-insensitive
-        // Adjust these assertions based on your database configuration
-        assertTrue(foundUser1.isPresent() || foundUser2.isPresent());
+        assertTrue(foundUser1.isPresent() == false && foundUser2.isPresent() == true);
     }
 
     @Test

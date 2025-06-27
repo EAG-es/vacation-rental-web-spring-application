@@ -1,15 +1,23 @@
 package com.vacationstay.controller.api;
 
 import com.vacationstay.dto.BookingDTO;
+import com.vacationstay.exception.ErrorResponse;
+import com.vacationstay.exception.ResourceNotFoundException;
+import com.vacationstay.exception.ValidationException;
 import com.vacationstay.service.BookingService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * REST controller for booking-related operations.
@@ -25,6 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/bookings")
 @RequiredArgsConstructor
+@Slf4j
 public class BookingApiController {
 
     private final BookingService bookingService;
@@ -47,7 +56,16 @@ public class BookingApiController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long id) {
-        return ResponseEntity.ok(bookingService.getBookingById(id));
+        if (id == null || id <= 0) {
+            throw new ValidationException("Booking ID must be a positive number");
+        }
+        
+        BookingDTO booking = bookingService.getBookingById(id);
+        if (booking == null) {
+            throw new ResourceNotFoundException("Booking", "id", id);
+        }
+        
+        return ResponseEntity.ok(booking);
     }
 
     /**

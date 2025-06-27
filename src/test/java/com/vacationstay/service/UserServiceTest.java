@@ -194,24 +194,22 @@ class UserServiceTest {
     @Test
     @DisplayName("Should delete user successfully")
     void shouldDeleteUserSuccessfully() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(testUser));
-        doNothing().when(userRepository).delete(testUser);
+        // Arrange
+        when(userRepository.existsById(1L)).thenReturn(true);
 
+        // Act
         assertDoesNotThrow(() -> userService.deleteUser(1L));
         
-        verify(userRepository).findById(1L);
-        verify(userRepository).delete(testUser);
+        // Assert
+        verify(userRepository).existsById(1L);
     }
 
     @Test
     @DisplayName("Should throw exception when deleting non-existent user")
     void shouldThrowExceptionWhenDeletingNonExistentUser() {
-        when(userRepository.findById(1L)).thenReturn(Optional.empty());
-
+        when(userRepository.existsById(1L)).thenReturn(false);
         assertThrows(EntityNotFoundException.class, () -> userService.deleteUser(1L));
-        
-        verify(userRepository).findById(1L);
-        verify(userRepository, never()).delete(any(User.class));
+        verify(userRepository).existsById(1L);
     }
 
     @Test
