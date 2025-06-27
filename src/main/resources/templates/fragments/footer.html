@@ -10,20 +10,26 @@
             <div class="row align-items-center">
                 <div class="col-md-6 mb-3 mb-md-0">
                     <p class="mb-0">
-                        <span class="fw-bold text-primary">VacationStay</span>
-                        <span class="text-muted ms-2">© 2023 All rights reserved.</span>
+                        <span class="fw-bold text-primary" th:text="#{app.name}">VacationStay</span>
+                        <span class="text-muted ms-2" th:text="#{footer.copyright}">© 2023 All rights reserved.</span>
                     </p>
                 </div>
                 <div class="col-md-6">
                     <ul class="list-inline mb-0 text-md-end">
                         <li class="list-inline-item">
-                            <a th:href="@{/properties}" class="text-decoration-none text-muted">Properties</a>
+                            <a th:href="@{/properties}" class="text-decoration-none text-muted" th:text="#{nav.browse}">Properties</a>
                         </li>
                         <li class="list-inline-item ms-3">
-                            <a th:href="@{/about}" class="text-decoration-none text-muted">About</a>
+                            <a th:href="@{/about}" class="text-decoration-none text-muted" th:text="#{footer.about}">About</a>
                         </li>
                         <li class="list-inline-item ms-3">
-                            <a th:href="@{/contact}" class="text-decoration-none text-muted">Contact</a>
+                            <a th:href="@{/contact}" class="text-decoration-none text-muted" th:text="#{footer.contact}">Contact</a>
+                        </li>
+                        <li class="list-inline-item ms-3">
+                            <a th:href="@{/terms}" class="text-decoration-none text-muted" th:text="#{footer.terms}">Terms</a>
+                        </li>
+                        <li class="list-inline-item ms-3">
+                            <a th:href="@{/privacy}" class="text-decoration-none text-muted" th:text="#{footer.privacy}">Privacy</a>
                         </li>
                     </ul>
                 </div>

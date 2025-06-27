@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VacationStay - Find Your Perfect Vacation Home</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+<head th:replace="~{fragments/head :: head('Find Your Perfect Vacation Home')}">
 </head>
 <body>
     <!-- Header -->
@@ -21,8 +15,8 @@
         <div class="container position-relative hero-content">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center text-white">
-                    <h1 class="display-4 fw-bold mb-4">Find Your Perfect Vacation Home</h1>
-                    <p class="lead mb-5">Discover and book unique accommodations around the world</p>
+                    <h1 class="display-4 fw-bold mb-4" th:text="#{home.title}">Find Your Perfect Vacation Home</h1>
+                    <p class="lead mb-5" th:text="#{home.subtitle}">Discover and book unique accommodations around the world</p>
                     
                     <form th:action="@{/properties}" method="get" class="search-form bg-white p-3 rounded shadow">
                         <div class="row g-2">
@@ -31,21 +25,22 @@
                                     <span class="input-group-text bg-transparent border-0">
                                         <i class="bi bi-geo-alt"></i>
                                     </span>
-                                    <input type="text" name="location" class="form-control border-0" placeholder="Where are you going?">
+                                    <input type="text" name="location" class="form-control border-0" th:placeholder="#{home.search.placeholder}">
                                 </div>
                             </div>
                             <div class="col-md-3">
                                 <select name="guests" class="form-select border-0">
-                                    <option value="">Guests</option>
-                                    <option value="1">1 guest</option>
-                                    <option value="2">2 guests</option>
-                                    <option value="4">4 guests</option>
-                                    <option value="6">6+ guests</option>
+                                    <option value="" th:text="#{home.search.guests}">Guests</option>
+                                    <option value="1">1 <span th:text="#{home.search.guest}">guest</span></option>
+                                    <option value="2">2 <span th:text="#{home.search.guests.plural}">guests</span></option>
+                                    <option value="4">4 <span th:text="#{home.search.guests.plural}">guests</span></option>
+                                    <option value="6">6+ <span th:text="#{home.search.guests.plural}">guests</span></option>
                                 </select>
                             </div>
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-primary w-100">
-                                    <i class="bi bi-search me-2"></i> Search
+                                    <i class="bi bi-search me-2"></i>
+                                    <span th:text="#{home.search.button}">Search</span>
                                 </button>
                             </div>
                         </div>
@@ -59,9 +54,9 @@
     <section class="py-5">
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="h3 mb-0">Featured Properties</h2>
+                <h2 class="h3 mb-0" th:text="#{home.featured.title}">Featured Properties</h2>
                 <a th:href="@{/properties}" class="btn btn-outline-primary">
-                    View all <i class="bi bi-arrow-right ms-1"></i>
+                    <span th:text="#{home.featured.viewall}">View all</span> <i class="bi bi-arrow-right ms-1"></i>
                 </a>
             </div>
             
@@ -71,7 +66,7 @@
                         <div class="position-relative">
                             <img th:src="${#strings.listSplit(property.images[0], ',')[0]}" class="card-img-top" alt="Property image">
                             <span class="position-absolute top-0 end-0 bg-primary text-white px-2 py-1 m-2 rounded">
-                                $<span th:text="${property.price}"></span>/night
+                                $<span th:text="${property.price}"></span><span th:text="#{property.price.night}">/night</span>
                             </span>
                         </div>
                         <div class="card-body">
@@ -79,21 +74,21 @@
                             <p class="card-text text-muted" th:text="${property.location}">Location</p>
                             
                             <div class="d-flex justify-content-between text-muted small mb-3">
-                                <span><i class="bi bi-people me-1"></i> <span th:text="${property.maxGuests}"></span> guests</span>
-                                <span><i class="bi bi-door-closed me-1"></i> <span th:text="${property.bedrooms}"></span> bedrooms</span>
-                                <span><i class="bi bi-water me-1"></i> <span th:text="${property.bathrooms}"></span> baths</span>
+                                <span><i class="bi bi-people me-1"></i> <span th:text="${property.maxGuests}"></span> <span th:text="#{property.guests}">guests</span></span>
+                                <span><i class="bi bi-door-closed me-1"></i> <span th:text="${property.bedrooms}"></span> <span th:text="#{property.bedrooms}">bedrooms</span></span>
+                                <span><i class="bi bi-water me-1"></i> <span th:text="${property.bathrooms}"></span> <span th:text="#{property.bathrooms}">baths</span></span>
                             </div>
                             
                             <div class="d-flex flex-wrap gap-1 mb-3">
                                 <span th:each="amenity, iterStat : ${property.amenities}" th:if="${iterStat.index < 3}" 
                                       class="badge bg-light text-dark" th:text="${amenity}">Amenity</span>
                                 <span th:if="${property.amenities.size() > 3}" class="badge bg-light text-dark">
-                                    +<span th:text="${property.amenities.size() - 3}"></span> more
+                                    +<span th:text="${property.amenities.size() - 3}"></span> <span th:text="#{common.more}">more</span>
                                 </span>
                             </div>
                         </div>
                         <div class="card-footer bg-white border-top">
-                            <a th:href="@{/properties/{id}(id=${property.id})}" class="btn btn-outline-primary w-100">View Details</a>
+                            <a th:href="@{/properties/{id}(id=${property.id})}" class="btn btn-outline-primary w-100" th:text="#{property.view.details}">View Details</a>
                         </div>
                     </div>
                 </div>
@@ -104,7 +99,7 @@
     <!-- Popular Destinations -->
     <section class="py-5 bg-light">
         <div class="container">
-            <h2 class="h3 mb-4">Popular Destinations</h2>
+            <h2 class="h3 mb-4" th:text="#{home.popular.destinations}">Popular Destinations</h2>
             
             <div class="row g-4">
                 <div class="col-md-4">
