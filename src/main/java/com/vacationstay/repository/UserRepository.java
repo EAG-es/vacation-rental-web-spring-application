@@ -34,4 +34,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return true if a user with the email exists, false otherwise
      */
     boolean existsByEmail(String email);
+    
+    /**
+     * Finds a user by their OAuth provider and provider ID.
+     *
+     * @param provider the OAuth provider (e.g., "google", "facebook")
+     * @param providerId the unique ID from the OAuth provider
+     * @return an Optional containing the user if found, or empty if not found
+     */
+    Optional<User> findByProviderAndProviderId(String provider, String providerId);
 }

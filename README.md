@@ -13,13 +13,6 @@ This application provides a platform for users to browse, book, and manage vacat
 
 ## Technology Stack
 
-### Frontend
-- React
-- Vite
-- Tailwind CSS
-- shadcn/ui components
-- i18next for internationalization
-
 ### Backend (Java Spring Boot)
 - Spring Boot
 - Spring Data JPA
@@ -30,26 +23,8 @@ This application provides a platform for users to browse, book, and manage vacat
 
 ## Getting Started
 
-### Prerequisites
-- Node.js (v16+)
-- npm or yarn
-- Java 17+
-- Maven
-
-### Running the Frontend
-```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-```
-
 ### Running the Backend
 ```bash
-# Navigate to the backend directory
-cd backend
-
 # Build the project
 mvn clean install
 
@@ -58,12 +33,6 @@ mvn spring-boot:run
 ```
 
 ## Testing
-
-### Frontend Tests
-```bash
-# Run tests
-npm test
-```
 
 ### Backend Tests
 ```bash
@@ -104,6 +73,3 @@ To add support for a new language:
 1. Create a new translation file in `src/locales/{language}/translation.json`
 2. Add the language to the language options in `src/components/LanguageSwitcher.tsx`
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
