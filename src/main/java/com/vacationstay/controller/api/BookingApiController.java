@@ -91,7 +91,8 @@ public class BookingApiController {
     public ResponseEntity<BookingDTO> updateBooking(
             @PathVariable Long id, 
             @RequestBody BookingDTO bookingDTO) {
-        return ResponseEntity.ok(bookingService.updateBooking(id, bookingDTO));
+        var booking_DTO = bookingService.updateBooking(id, bookingDTO);
+        return ResponseEntity.ok(booking_DTO);
     }
 
     /**
