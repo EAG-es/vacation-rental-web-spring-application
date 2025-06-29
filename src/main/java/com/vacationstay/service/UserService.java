@@ -51,6 +51,15 @@ public interface UserService {
     UserDTO registerUser(UserDTO userDTO);
     
     /**
+     * Creates a new user in the system.
+     *
+     * @param userDTO the user data to create
+     * @return the created user DTO with assigned ID
+     * @throws IllegalStateException if the email is already in use
+     */
+    UserDTO createUser(UserDTO userDTO);
+    
+    /**
      * Updates an existing user's information.
      *
      * @param id the unique identifier of the user to update

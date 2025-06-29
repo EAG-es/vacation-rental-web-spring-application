@@ -86,7 +86,7 @@ class SecurityConfigTest {
 
     @Test
     @DisplayName("Should handle form login correctly")
-//    @WithMockUser(username = "john@example.com", roles = "USER")
+//    @WithMockUser(username = "john@example.com", password = "john_doe_password", roles = "USER")
     void shouldHandleFormLoginCorrectly() throws Exception {
         ResultActions resultActions = mockMvc.perform(formLogin("/login")
                 .user("john@example.com")
@@ -98,7 +98,7 @@ class SecurityConfigTest {
 
     @Test
     @DisplayName("Should handle logout correctly")
-//    @WithMockUser(username = "john@example.com", roles = "USER")
+//    @WithMockUser(username = "john@example.com", password = "john_doe_password", roles = "USER")
     void shouldHandleLogoutCorrectly() throws Exception {
         shouldHandleFormLoginCorrectly();
         var resultActions = mockMvc.perform(logout("/logout"));
@@ -111,7 +111,7 @@ class SecurityConfigTest {
 
     @Test
     @DisplayName("Should allow authenticated users to access protected endpoints")
-    @WithMockUser(username = "john@example.com", roles = "USER")
+    @WithMockUser(username = "john@example.com", password = "john_doe_password", roles = "USER")
     void shouldAllowAuthenticatedUsersToAccessProtectedEndpoints() throws Exception {
         mockMvc.perform(get("/dashboard"))
                 .andExpect(status().isOk())
@@ -128,7 +128,7 @@ class SecurityConfigTest {
 
     @Test
     @DisplayName("Should allow API endpoints for authenticated users")
-    @WithMockUser(username = "john@example.com", roles = "USER")
+    @WithMockUser(username = "john@example.com", password = "john_doe_password", roles = "USER")
     void shouldAllowAPIEndpointsForAuthenticatedUsers() throws Exception {
         mockMvc.perform(get("/api/properties"))
                 .andExpect(status().isOk())
@@ -145,7 +145,7 @@ class SecurityConfigTest {
 
     @Test
     @DisplayName("Should handle session management")
-    @WithMockUser(username = "john@example.com", roles = "USER")
+    @WithMockUser(username = "john@example.com", password = "john_doe_password", roles = "USER")
     void shouldHandleSessionManagement() throws Exception {
         // Test session concurrency control
         mockMvc.perform(get("/dashboard"))
@@ -206,7 +206,7 @@ class SecurityConfigTest {
 
     @Test
     @DisplayName("Should handle different HTTP methods for protected resources")
-    @WithMockUser(username = "john@example.com", roles = "USER")
+    @WithMockUser(username = "john@example.com", password = "john_doe_password", roles = "USER")
     void shouldHandleDifferentHttpMethodsForProtectedResources() throws Exception {
         // GET should work
         mockMvc.perform(get("/dashboard"))

@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -111,13 +110,19 @@ public class CustomErrorController implements ErrorController {
     }
     
     private String getDefaultErrorMessage(int statusCode) {
-        return switch (statusCode) {
-            case 400 -> "Bad request. Please check your input.";
-            case 401 -> "You need to log in to access this resource.";
-            case 403 -> "You don't have permission to access this resource.";
-            case 404 -> "The requested resource was not found.";
-            case 500 -> "An internal server error occurred. Please try again later.";
-            default -> "An unexpected error occurred.";
-        };
+        switch (statusCode) {
+            case 400:
+                return "Bad request. Please check your input.";
+            case 401:
+                return "You need to log in to access this resource.";
+            case 403:
+                return "You don't have permission to access this resource.";
+            case 404:
+                return "The requested resource was not found.";
+            case 500:
+                return "An internal server error occurred. Please try again later.";
+            default:
+                return "An unexpected error occurred.";
+        }
     }
 }

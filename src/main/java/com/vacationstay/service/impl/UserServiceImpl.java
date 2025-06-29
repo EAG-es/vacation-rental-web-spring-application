@@ -74,6 +74,36 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public UserDTO createUser(UserDTO userDTO) {
+        if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new IllegalStateException("Email already in use");
+        }
+        
+        User user = new User();
+        user.setName(userDTO.getName());
+        user.setEmail(userDTO.getEmail());
+        
+        // Encode password if provided
+        if (userDTO.getPassword() != null && !userDTO.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        }
+        
+        // Set provider (default to "local" if not specified)
+        user.setProvider(userDTO.getProvider() != null ? userDTO.getProvider() : "local");
+        user.setProviderId(userDTO.getProviderId());
+        user.setImageUrl(userDTO.getImageUrl());
+        
+        // Set default role to USER if no roles specified
+        Set<String> roles = new HashSet<>();
+        roles.add("USER");
+        user.setRoles(roles);
+        
+        User savedUser = userRepository.save(user);
+        return convertToDTO(savedUser);
+    }
+
+    @Override
+    @Transactional
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("User not found with id: " + id));
