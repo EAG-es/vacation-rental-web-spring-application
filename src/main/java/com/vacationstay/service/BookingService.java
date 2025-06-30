@@ -96,4 +96,14 @@ public interface BookingService {
      * @throws jakarta.persistence.EntityNotFoundException if the booking is not found
      */
     BookingDTO cancelBooking(Long id);
+    
+    /**
+     * Retrieves all booked dates for a specific property.
+     * This method returns all dates that are already booked for the property,
+     * which can be used to disable those dates in the calendar.
+     *
+     * @param propertyId the ID of the property
+     * @return a list of booked dates for the specified property
+     */
+    List<LocalDate> getBookedDatesForProperty(Long propertyId);
 }

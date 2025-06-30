@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Controller
@@ -60,6 +61,11 @@ public class PropertyController {
         PropertyDTO property = propertyService.getPropertyById(id);
         model.addAttribute("property", property);
         model.addAttribute("reviews", reviewService.getReviewsByProperty(id));
+        
+        // Get booked dates for the property to disable them in the calendar
+        List<LocalDate> bookedDates = bookingService.getBookedDatesForProperty(id);
+        model.addAttribute("bookedDates", bookedDates);
+        
         return "property-detail";
     }
 }

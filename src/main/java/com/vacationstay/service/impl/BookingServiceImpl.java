@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -132,6 +133,26 @@ public class BookingServiceImpl implements BookingService {
         booking.setStatus("cancelled");
         Booking updatedBooking = bookingRepository.save(booking);
         return convertToDTO(updatedBooking);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<LocalDate> getBookedDatesForProperty(Long propertyId) {
+        List<Booking> bookings = bookingRepository.findByPropertyId(propertyId);
+        List<LocalDate> bookedDates = new ArrayList<>();
+        
+        for (Booking booking : bookings) {
+            // Only consider confirmed bookings (not cancelled)
+            if (!"cancelled".equals(booking.getStatus())) {
+                LocalDate currentDate = booking.getStartDate();
+                while (!currentDate.isAfter(booking.getEndDate())) {
+                    bookedDates.add(currentDate);
+                    currentDate = currentDate.plusDays(1);
+                }
+            }
+        }
+        
+        return bookedDates;
     }
 
     private BookingDTO convertToDTO(Booking booking) {
